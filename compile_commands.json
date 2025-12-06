@@ -1,0 +1,38 @@
+[
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++  -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c Actor.cpp",
+    "file": "Actor.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c Component.cpp",
+    "file": "Component.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c SpriteComponent.cpp",
+    "file": "SpriteComponent.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c AnimSpriteComponent.cpp",
+    "file": "AnimSpriteComponent.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c BackgroundSpriteComponent.cpp",
+    "file": "BackgroundSpriteComponent.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c Main.cpp",
+    "file": "Main.cpp"
+  },
+  {
+    "directory": "D:/coding/cpp_gamedev/2dsidescroller",
+    "command": "g++ -std=c++20 -xc++ -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/include -D_REENTRANT -c Game.cpp",
+    "file": "Game.cpp"
+  }
+]
+
