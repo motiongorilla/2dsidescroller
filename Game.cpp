@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "BackgroundSpriteComponent.h"
 
 #include <algorithm>
 #include <SDL3/SDL_init.h>
@@ -25,9 +26,11 @@ bool Game::Initialize() {
     }
 
     SDL_DisplayID display_id = SDL_GetPrimaryDisplay();
-    const SDL_DisplayMode* displayData = SDL_GetDesktopDisplayMode(display_id);
+    // const SDL_DisplayMode* displayData = SDL_GetDesktopDisplayMode(display_id);
+    win_width_ = 1024;
+    win_height_ = 1024;
 
-    game_window_ = SDL_CreateWindow("Hybrid architecture game", 1024, 1024, SDL_WINDOW_RESIZABLE);
+    game_window_ = SDL_CreateWindow("Hybrid architecture game", win_width_, win_height_, SDL_WINDOW_RESIZABLE);
 
     if(!game_window_) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -35,6 +38,9 @@ bool Game::Initialize() {
 
     game_render_ = SDL_CreateRenderer(game_window_, NULL);
     SDL_SetRenderVSync(game_render_, 1);
+    SDL_SetRenderDrawBlendMode(game_render_, SDL_BLENDMODE_BLEND);
+
+    LoadData();
 
     return true;
 }
@@ -120,13 +126,14 @@ void Game::UpdateData() {
 }
 
 void Game::Render() {
-    // background
-    SDL_SetRenderDrawColor(game_render_, 0, 50, 25, 255);
+    // clear color
+    SDL_SetRenderDrawColor(game_render_, 0, 0, 0, 255);
 
     // clearing back buffer
     SDL_RenderClear(game_render_);
 
-    RenderForeground();
+    RenderBackground(game_render_);
+    RenderForeground(game_render_);
 
     // swapping back to front
     SDL_RenderPresent(game_render_);
@@ -156,8 +163,16 @@ void Game::RemoveActor(Actor* actor) {
     }
 }
 
-void Game::RenderForeground() {
+void Game::RenderForeground(SDL_Renderer* renderer) {
+}
 
+void Game::RenderBackground(SDL_Renderer* renderer) {
+    for (SpriteComponent* sprite : sprites_) {
+        sprite->Draw(renderer);
+    }
+    SDL_SetRenderDrawColor(game_render_, 0, 0, 20, 122);
+    SDL_FRect overlay{0.f, 0.f, static_cast<float>(win_width_), static_cast<float>(win_height_)};
+    SDL_RenderFillRect(renderer, &overlay);
 }
 
 SDL_Texture* Game::LoadTexture(const char* filepath) {
@@ -208,4 +223,41 @@ void Game::RemoveSprite(SpriteComponent* sprite) {
         sprites_.erase(it);
         return;
     }
+}
+
+void Game::LoadData() {
+    SDL_Texture* bg_texture_a = LoadTexture("./background/pixelart_starfield_corona.png");
+    SDL_Texture* bg_texture_b = LoadTexture("./background/pixelart_starfield.png");
+    SDL_Texture* bg_texture_c = LoadTexture("./background/pixelart_starfield_diagonal_diffraction_spikes.png");
+    SDL_Texture* nebula = LoadTexture("./background/Green_Nebula_transparent.png");
+    textures_.insert({"coronabg", bg_texture_a});
+    textures_.insert({"starfieldbg", bg_texture_b});
+    textures_.insert({"spikesbg", bg_texture_c});
+    textures_.insert({"nebula", nebula});
+
+    Actor* bg_actor = new Actor(this);
+    BackgroundSpriteComponent* bg_sprite = new BackgroundSpriteComponent(bg_actor, 90);
+    BackgroundSpriteComponent* bg_sprite_nebula = new BackgroundSpriteComponent(bg_actor, 100);
+
+    std::vector<SDL_Texture*> bg_textures;
+    bg_textures.emplace_back(textures_.at("starfieldbg"));
+    bg_textures.emplace_back(textures_.at("coronabg"));
+    bg_textures.emplace_back(textures_.at("spikesbg"));
+
+    std::vector<SDL_Texture*> bg_textures_nebula;
+    bg_textures_nebula.emplace_back(textures_.at("nebula"));
+    bg_textures_nebula.emplace_back(textures_.at("nebula"));
+
+    bg_sprite_nebula->SetScrollSpeed(50.f);
+    bg_sprite_nebula->SetScreenSize({1024.f, 1024.f});
+    bg_sprite_nebula->SetBGTextures(bg_textures_nebula);
+
+    bg_sprite->SetScrollSpeed(25.f);
+    bg_sprite->SetScreenSize({1024.f, 1024.f});
+    bg_sprite->SetBGTextures(bg_textures);
+
+    bg_actor->AddComponent(bg_sprite);
+    bg_actor->AddComponent(bg_sprite_nebula);
+    bg_actor->SetPosition({static_cast<float>(win_width_/2.f), static_cast<float>(win_height_/2.f)});
+    AddActor(bg_actor);
 }

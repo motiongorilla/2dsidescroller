@@ -28,16 +28,20 @@ private:
     void UpdateData();
     void Render();
 
-    void RenderForeground();
+    void RenderBackground(SDL_Renderer* renderer);
+    void RenderForeground(SDL_Renderer* renderer);
 
     SDL_Texture* LoadTexture(const char* filepath);
     SDL_Texture* GetTexture(char* texture_path);
+
     void LoadData();
 public:
     bool is_running_;
     bool updating_actors_;
 
     int tick_number_;
+    int win_width_;
+    int win_height_;
 
     SDL_Window* game_window_;
     SDL_Renderer* game_render_;
@@ -47,5 +51,5 @@ public:
 
     std::vector<SpriteComponent*> sprites_;
 
-    std::map<char*, SDL_Texture*> textures_;
+    std::map<const char*, SDL_Texture*> textures_;
 };

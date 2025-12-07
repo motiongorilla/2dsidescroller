@@ -4,9 +4,17 @@
 
 Actor::Actor(Game* game_ref) {
     game_ = game_ref;
+    state_ = State::Active;
+    position_ = {0.f, 0.f};
+    scale_ = 1.f;
+    rotation_ = 0.f;
 }
 
 Actor::~Actor() {
+    for (Component* comp : components_) {
+        delete comp;
+    }
+    components_.clear();
 }
 
 void Actor::Update(float delta_time){
