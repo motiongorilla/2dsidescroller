@@ -7,7 +7,7 @@ INCLUDES = -I ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/include -I ../librarie
 LIBS     = -L ../libraries/SDL3-3.2.26/x86_64-w64-mingw32/lib -lSDL3 -L ../libraries/SDL3_image-3.2.4/x86_64-w64-mingw32/lib -lSDL3_image
 
 # Source files
-SRC = Main.cpp Game.cpp Actor.cpp Component.cpp SpriteComponent.cpp AnimSpriteComponent.cpp BackgroundSpriteComponent.cpp
+SRC = Main.cpp Game.cpp Actor.cpp Component.cpp SpriteComponent.cpp AnimSpriteComponent.cpp BackgroundSpriteComponent.cpp Spaceship.cpp
 OBJ = $(SRC:.cpp=.o)
 
 # Output

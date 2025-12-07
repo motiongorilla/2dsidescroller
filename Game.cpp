@@ -1,7 +1,9 @@
 #include "Game.h"
 #include "BackgroundSpriteComponent.h"
+#include "Spaceship.h"
 
 #include <algorithm>
+#include <typeinfo>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_error.h>
@@ -85,6 +87,12 @@ void Game::ProcessInput() {
 
     if (keyboardState[SDL_SCANCODE_ESCAPE]) {
         is_running_ = false;
+    }
+
+    for (Actor* actor : actors_) {
+        if (SpaceshipActor* spaceship = dynamic_cast<SpaceshipActor*>(actor)) {
+            spaceship->ProcessKeyboard(keyboardState);
+        }
     }
 }
 
@@ -260,4 +268,17 @@ void Game::LoadData() {
     bg_actor->AddComponent(bg_sprite_nebula);
     bg_actor->SetPosition({static_cast<float>(win_width_/2.f), static_cast<float>(win_height_/2.f)});
     AddActor(bg_actor);
+
+    SDL_Texture* spaceship = LoadTexture("spaceship.png");
+    textures_.insert({"spaceship", spaceship});
+
+    Actor* spaceship_actor = new SpaceshipActor(this);
+    SpriteComponent* ship_sprite = new SpriteComponent(spaceship_actor, 100);
+
+    ship_sprite->SetTexture(textures_.at("spaceship"));
+    spaceship_actor->SetPosition({win_width_/2.f, win_height_/2.f});
+    spaceship_actor->SetScale(0.1f);
+
+    spaceship_actor->AddComponent(ship_sprite);
+    AddActor(spaceship_actor);
 }
