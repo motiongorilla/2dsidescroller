@@ -22,19 +22,41 @@ void SpriteComponent::SetTexture(SDL_Texture* texture) {
     texture_width_ = texture_->w;
 }
 
+void SpriteComponent::SetSpriteRenderFrame(Vector2 pos, Vector2 extents, bool is_full) {
+    if(is_full) {
+        use_render_frame_ = false;
+        return;
+    }
+
+    sprite_render_frame_.w = extents.x_;
+    sprite_render_frame_.h = extents.y_;
+
+    sprite_render_frame_.x = pos.x_;
+    sprite_render_frame_.y = pos.y_;
+
+    use_render_frame_ = true;
+}
+
 void SpriteComponent::Draw(SDL_Renderer* renderer) {
     if (texture_) {
         SDL_FRect r;
+
+        // get width and height based on render frame
+        float src_w = use_render_frame_ ? sprite_render_frame_.w : static_cast<float>(texture_width_);
+        float src_h = use_render_frame_ ? sprite_render_frame_.h : static_cast<float>(texture_height_);
+
         // scale width and hight by owners scale
-        r.w = static_cast<int>(texture_width_ * owner_->GetScale());
-        r.h = static_cast<int>(texture_height_ * owner_->GetScale());
+        r.w = src_w * owner_->GetScale();
+        r.h = src_h * owner_->GetScale();
 
         // center rect from the position of the owning actor
-        r.x = static_cast<int>(owner_->GetPosition().x_ - static_cast<float>(r.w)/2.f);
-        r.y = static_cast<int>(owner_->GetPosition().y_ - static_cast<float>(r.h)/2.f);
+        r.x = owner_->GetPosition().x_ - static_cast<float>(r.w)/2.f;
+        r.y = owner_->GetPosition().y_ - static_cast<float>(r.h)/2.f;
 
         // Draw
         double rotation_amount = static_cast<double>(owner_->GetRotation() * (180/std::numbers::pi)); // converting radians to degrees
-        SDL_RenderTextureRotated(renderer, texture_, nullptr, &r, -rotation_amount, nullptr, SDL_FLIP_NONE);
+
+        SDL_FRect* srcrect = use_render_frame_ ? &sprite_render_frame_ : nullptr;
+        SDL_RenderTextureRotated(renderer, texture_, srcrect, &r, -rotation_amount, nullptr, SDL_FLIP_NONE);
     }
 }

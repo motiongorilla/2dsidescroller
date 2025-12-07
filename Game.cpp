@@ -273,7 +273,7 @@ void Game::LoadData() {
     textures_.insert({"spaceship", spaceship});
 
     Actor* spaceship_actor = new SpaceshipActor(this);
-    SpriteComponent* ship_sprite = new SpriteComponent(spaceship_actor, 100);
+    SpriteComponent* ship_sprite = new SpriteComponent(spaceship_actor, 105);
 
     ship_sprite->SetTexture(textures_.at("spaceship"));
     spaceship_actor->SetPosition({win_width_/2.f, win_height_/2.f});
@@ -281,4 +281,18 @@ void Game::LoadData() {
 
     spaceship_actor->AddComponent(ship_sprite);
     AddActor(spaceship_actor);
+
+    SDL_Texture* celestial_objects = LoadTexture("./background/CelestialObjects.png");
+    textures_.insert({"space_objects", celestial_objects});
+
+    Actor* asteroid_actor = new Actor(this);
+    SpriteComponent* asteroid_sprite = new SpriteComponent(asteroid_actor, 110);
+
+    asteroid_sprite->SetTexture(textures_.at("space_objects"));
+    asteroid_sprite->SetSpriteRenderFrame({34.f, 226.f}, {60.f, 30.f}, false);
+    asteroid_actor->SetPosition({win_width_/2.f+200, win_height_/2.f});
+    asteroid_actor->SetScale(2.f);
+
+    asteroid_actor->AddComponent(asteroid_sprite);
+    AddActor(asteroid_actor);
 }

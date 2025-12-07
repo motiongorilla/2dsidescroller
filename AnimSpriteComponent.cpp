@@ -2,9 +2,8 @@
 #include "Game.h"
 
 AnimSpriteComponent::AnimSpriteComponent(Actor* owner, int draw_order) : SpriteComponent(owner, draw_order) {
-    draw_order_ = draw_order;
-    owner_ = owner;
-    owner->GetGameRef()->AddSprite(this);
+    current_frame_displayed_ = 0.f;
+    animation_fps_ = 5;
 }
 
 void AnimSpriteComponent::SetAnimationTextures(const std::vector<SDL_Texture*>& textures) {

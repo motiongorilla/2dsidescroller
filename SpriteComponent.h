@@ -12,6 +12,7 @@ public:
 
     virtual void Draw(SDL_Renderer* renderer);
     virtual void SetTexture(SDL_Texture* texture);
+    virtual void SetSpriteRenderFrame(Vector2 pos, Vector2 extents, bool is_full = true);
 
     int GetDrawOrder() const {return draw_order_;}
     int GetTexHeight() const {return texture_height_;}
@@ -22,4 +23,7 @@ protected:
     int draw_order_;
     int texture_width_;
     int texture_height_;
+
+    SDL_FRect sprite_render_frame_{};
+    bool use_render_frame_ = false;
 };
